@@ -6,6 +6,8 @@ import 'package:news_app/helper/news.dart';
 import 'package:news_app/model/artical_model.dart';
 import 'package:news_app/model/categoryModel.dart';
 
+import 'artical_views.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -81,7 +83,9 @@ class _HomeState extends State<Home> {
                   itemBuilder: (context,index){
                     return BlogTile(imageUrl: articles[index].urlToImage,
                         title: articles[index].title,
-                        desc: articles[index].description,);
+                        desc: articles[index].description,
+                         url: articles[index].url,
+                    );
                   },
                 ),
               )
@@ -130,17 +134,22 @@ class CategoryTile extends StatelessWidget {
   }
 }
 class BlogTile extends StatelessWidget {
-  final String imageUrl, title, desc;
-  BlogTile({@required this.imageUrl,@required this.title,@required this.desc});
+  final String imageUrl, title, desc, url;
+  BlogTile({@required this.imageUrl,@required this.title,@required this.desc, @required this.url});
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Column(
         children: [
-           ClipRRect(
-               borderRadius: BorderRadius.circular(6),
-               child: Image.network(imageUrl)),
+           GestureDetector(
+             onTap: (){
+               Navigator.push(context, MaterialPageRoute(builder: (context)=>ArticleView(blogUrl: url,)));
+             },
+             child: ClipRRect(
+                 borderRadius: BorderRadius.circular(6),
+                 child: Image.network(imageUrl)),
+           ),
           SizedBox(height: 8,),
           Text(title,style: TextStyle(color: Colors.black87,fontSize: 17,fontWeight: FontWeight.w600),),
           SizedBox(height: 8,),
